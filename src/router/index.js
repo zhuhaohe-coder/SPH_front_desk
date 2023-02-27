@@ -7,6 +7,17 @@ import Register from "@/pages/Register";
 
 Vue.use(VueRouter);
 
+// VueRouter原型对象上的push方法,这里备份到window中,上下文发生变化
+const originPush = VueRouter.prototype.push;
+const originReplace = VueRouter.prototype.replace;
+
+VueRouter.prototype.push = function (location) {
+  return originPush.call(this, location).catch((err) => err);
+};
+VueRouter.prototype.replace = function (location) {
+  return originReplace.call(this, location).catch((err) => err);
+};
+
 export default new VueRouter({
   routes: [
     //重定向,初始化时展示home

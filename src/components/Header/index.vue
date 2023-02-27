@@ -52,8 +52,6 @@
 </template>
 
 <script>
-import router from "@/router";
-
 export default {
   name: "FrontHeader",
   data() {
@@ -61,7 +59,6 @@ export default {
       keyword: "",
     };
   },
-  components: { router },
   methods: {
     goSearch() {
       // this.$router.push(

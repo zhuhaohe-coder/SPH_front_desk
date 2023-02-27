@@ -15,9 +15,6 @@ export default {
     FrontHeader,
     FrontFooter,
   },
-  mounted() {
-    console.log(this.$route.meta);
-  },
 };
 </script>
 
