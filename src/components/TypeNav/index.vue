@@ -1,47 +1,60 @@
 <template>
   <div class="type-nav">
     <div class="container">
-      <div @mouseleave="currentIndex = -1">
+      <div @mouseleave="leaveShow" @mouseenter="enterShow">
         <h2 class="all">全部商品分类</h2>
-        <div class="sort">
-          <div class="all-sort-list2">
-            <div
-              class="item"
-              v-for="(cg1, index) in categoryList"
-              :key="cg1.categoryId"
-            >
-              <h3
-                @mouseenter="changeIndex(index)"
-                :class="{ cur: currentIndex === index }"
+        <transition name="sort">
+          <div class="sort" @click="goSearch" v-show="isShow">
+            <div class="all-sort-list2">
+              <div
+                class="item"
+                v-for="(cg1, index) in categoryList"
+                :key="cg1.categoryId"
               >
-                <a href="">{{ cg1.categoryName }}</a>
-              </h3>
-              <div class="item-list clearfix">
-                <div
-                  class="subitem"
-                  v-for="cg2 in cg1.categoryChild"
-                  :key="cg2.categoryId"
+                <h3
+                  @mouseenter="changeIndex(index)"
+                  :class="{ cur: currentIndex === index }"
                 >
-                  <dl class="fore">
-                    <dt>
-                      <a href="">{{ cg2.categoryName }}</a>
-                    </dt>
-                    <dd>
-                      <em
-                        v-for="cg3 in cg2.categoryChild"
-                        :key="cg3.categoryId"
-                      >
-                        <a href="">{{ cg3.categoryName }}</a>
-                      </em>
-                    </dd>
-                  </dl>
+                  <a
+                    :data-categoryName="cg1.categoryName"
+                    :data-category1Id="cg1.categoryId"
+                    >{{ cg1.categoryName }}</a
+                  >
+                </h3>
+                <div class="item-list clearfix">
+                  <div
+                    class="subitem"
+                    v-for="cg2 in cg1.categoryChild"
+                    :key="cg2.categoryId"
+                  >
+                    <dl class="fore">
+                      <dt>
+                        <a
+                          :data-categoryName="cg1.categoryName"
+                          :data-category2Id="cg2.categoryId"
+                          >{{ cg2.categoryName }}</a
+                        >
+                      </dt>
+                      <dd>
+                        <em
+                          v-for="cg3 in cg2.categoryChild"
+                          :key="cg3.categoryId"
+                        >
+                          <a
+                            :data-categoryName="cg1.categoryName"
+                            :data-category3Id="cg3.categoryId"
+                            >{{ cg3.categoryName }}</a
+                          >
+                        </em>
+                      </dd>
+                    </dl>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </transition>
       </div>
-
       <nav class="nav">
         <a href="###">服装城</a>
         <a href="###">美妆馆</a>
@@ -58,6 +71,8 @@
 
 <script>
 import { mapState } from "vuex";
+// 按需引入lodash中的throttle函数(节流)
+import throttle from "lodash/throttle.js";
 
 export default {
   name: "TypeNav",
@@ -65,14 +80,46 @@ export default {
     return {
       // 一级菜单悬停背景
       currentIndex: -1,
+      isShow: true,
     };
   },
   mounted() {
-    this.$store.dispatch("categoryList");
+    if (this.$route.path !== "/home") {
+      this.isShow = false;
+    }
   },
   methods: {
-    changeIndex(index) {
+    changeIndex: throttle(function (index) {
       this.currentIndex = index;
+    }, 50),
+    goSearch(event) {
+      const { categoryname, category1id, category2id, category3id } =
+        event.target.dataset;
+      const location = {
+        name: "search",
+      };
+      const query = {};
+      if (categoryname) {
+        query.categoryName = categoryname;
+        if (category1id) {
+          query.category1Id = category1id;
+        } else if (category2id) {
+          query.category2Id = category2id;
+        } else {
+          query.category3Id = category3id;
+        }
+        location.query = query;
+        this.$router.push(location);
+      }
+    },
+    enterShow() {
+      this.isShow = true;
+    },
+    leaveShow() {
+      this.currentIndex = -1;
+      if (this.$route.path !== "/home") {
+        this.isShow = false;
+      }
     },
   },
   computed: {
@@ -88,6 +135,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+a {
+  cursor: pointer;
+}
 .type-nav {
   border-bottom: 2px solid #e1251b;
 
@@ -207,6 +257,21 @@ export default {
           }
         }
       }
+    }
+    // 元素进入时的状态
+    .sort-enter,
+    .sort-leave-to {
+      height: 0px;
+    }
+    // 元素离开时的状态
+    .sort-enter-to,
+    .sort-leave {
+      height: 461px;
+    }
+    // 配置动画的时间,速率
+    .sort-enter-active,
+    .sort-leave-active {
+      transition: all 0.2s linear;
     }
   }
 }

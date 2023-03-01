@@ -15,6 +15,10 @@ export default {
     FrontHeader,
     FrontFooter,
   },
+  mounted() {
+    // 派发一个action,获取商品分类三级列表的数据
+    this.$store.dispatch("categoryList");
+  },
 };
 </script>
 
