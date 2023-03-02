@@ -109,6 +109,9 @@ export default {
           query.category3Id = category3id;
         }
         location.query = query;
+        if (this.$route.params) {
+          location.params = this.$route.params;
+        }
         this.$router.push(location);
       }
     },
