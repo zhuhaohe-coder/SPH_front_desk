@@ -109,6 +109,7 @@ export default {
           query.category3Id = category3id;
         }
         location.query = query;
+        // 合并参数
         if (this.$route.params) {
           location.params = this.$route.params;
         }

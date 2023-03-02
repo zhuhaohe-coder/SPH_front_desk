@@ -68,6 +68,7 @@ export default {
         name: "search",
         params: { keyword: this.keyword || undefined },
       };
+      // 合并参数
       if (this.$route.query) {
         location.query = this.$route.query;
       }
