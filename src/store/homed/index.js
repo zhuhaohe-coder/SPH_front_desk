@@ -9,7 +9,7 @@ const actions = {
   },
   async bannerList({ commit }) {
     const result = await reqBannerList();
-    console.log(result);
+
     if (result.code === 200) {
       commit("BANNER_LIST", result.data);
     }

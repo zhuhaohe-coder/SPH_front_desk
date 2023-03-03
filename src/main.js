@@ -4,6 +4,7 @@ import router from "./router";
 import TypeNav from "@/components/TypeNav";
 import "@/mock/mockServe";
 import store from "@/store";
+import "swiper/css/swiper.css";
 
 Vue.config.productionTip = false;
 Vue.component(TypeNav.name, TypeNav);
