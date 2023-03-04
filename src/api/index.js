@@ -10,5 +10,7 @@ export const reqCategoryList = () => {
     method: "get",
   });
 };
-
+// 轮播图接口
 export const reqBannerList = () => mockRequest.get("/banners");
+// 楼梯接口
+export const reqFloorList = () => mockRequest.get("/floors");
