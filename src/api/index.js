@@ -14,3 +14,13 @@ export const reqCategoryList = () => {
 export const reqBannerList = () => mockRequest.get("/banners");
 // 楼梯接口
 export const reqFloorList = () => mockRequest.get("/floors");
+
+// 搜索模块数据接口
+// params至少为一个空对象
+export const reqSearchInfo = (params) => {
+  return requests({
+    url: "/list",
+    method: "post",
+    data: params,
+  });
+};
