@@ -4,7 +4,11 @@
       <div class="fl key brand">品牌</div>
       <div class="value logos">
         <ul class="logo-list">
-          <li v-for="trademark in trademarkList" :key="trademark.tmId">
+          <li
+            v-for="trademark in trademarkList"
+            :key="trademark.tmId"
+            @click="handleTrademark(trademark)"
+          >
             {{ trademark.tmName }}
           </li>
         </ul>
@@ -30,6 +34,11 @@ export default {
   name: "SearchSelector",
   computed: {
     ...mapGetters(["attrsList", "trademarkList"]),
+  },
+  methods: {
+    handleTrademark(trademark) {
+      this.$emit("trademarkInfo", trademark);
+    },
   },
 };
 </script>

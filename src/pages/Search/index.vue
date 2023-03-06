@@ -11,15 +11,17 @@
             </li>
           </ul>
           <ul class="fl sui-tag">
-            <li class="with-x">手机</li>
-            <li class="with-x">iphone<i>×</i></li>
-            <li class="with-x">华为<i>×</i></li>
-            <li class="with-x">OPPO<i>×</i></li>
+            <li class="with-x" v-if="searchParams.categoryName">
+              {{ searchParams.categoryName }}<i @click="removeBread(0)">×</i>
+            </li>
+            <li class="with-x" v-if="searchParams.keyword">
+              {{ searchParams.keyword }}<i @click="removeBread(1)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector />
+        <SearchSelector @trademarkInfo="trademarkInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -159,6 +161,31 @@ export default {
     getSearchData() {
       this.$store.dispatch("getSearchList", this.searchParams);
     },
+    // type为0删除categoryName,params参数不变;为1删除keyword,query参数不变
+    removeBread(type) {
+      if (type === 1) {
+        // 清空搜索框
+        this.$bus.$emit("clearKeyword");
+        // 重新跳转路由,携带query参数
+        this.$router.push({
+          name: "search",
+          query: this.$route.query,
+        });
+      } else {
+        // 重新跳转路由,携带params参数
+        this.$router.push({
+          name: "search",
+          params: this.$route.params,
+        });
+      }
+      // 使面包屑不再展示
+      this.searchParams[`${type === 0 ? "categoryName" : "keyword"}`] =
+        undefined;
+    },
+    trademarkInfo(trademark) {
+      this.searchParams.trademark = trademark;
+      this.getSearchData();
+    },
   },
   beforeMount() {
     Object.assign(this.searchParams, this.$route.query, this.$route.params);
@@ -171,6 +198,9 @@ export default {
   },
   watch: {
     $route(newValue, oldValue) {
+      this.searchParams.category1Id = undefined;
+      this.searchParams.category2Id = undefined;
+      this.searchParams.category3Id = undefined;
       Object.assign(this.searchParams, this.$route.query, this.$route.params);
       this.getSearchData();
     },

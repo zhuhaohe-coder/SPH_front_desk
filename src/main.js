@@ -17,4 +17,8 @@ new Vue({
   router,
   // 注册仓库,每个组件实例都拥有$store
   store,
+  beforeCreate() {
+    // 安装全局事件总线
+    Vue.prototype.$bus = this;
+  },
 }).$mount("#app");
