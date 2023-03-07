@@ -17,11 +17,22 @@
             <li class="with-x" v-if="searchParams.keyword">
               {{ searchParams.keyword }}<i @click="removeBread(1)">×</i>
             </li>
+            <li class="with-x" v-if="searchParams.trademark">
+              {{ searchParams.trademark.split(":")[1]
+              }}<i @click="removeTrademark">×</i>
+            </li>
+            <li
+              class="with-x"
+              v-for="prop in searchParams.props"
+              :key="prop.split(':')[0]"
+            >
+              {{ prop.split(":")[1] }}<i @click="removeProps(prop)">×</i>
+            </li>
           </ul>
         </div>
 
         <!--selector-->
-        <SearchSelector @trademarkInfo="trademarkInfo" />
+        <SearchSelector @trademarkInfo="trademarkInfo" @propsInfo="propsInfo" />
 
         <!--details-->
         <div class="details clearfix">
@@ -183,7 +194,30 @@ export default {
         undefined;
     },
     trademarkInfo(trademark) {
-      this.searchParams.trademark = trademark;
+      this.searchParams.trademark = `${trademark.tmId}:${trademark.tmName}`;
+      this.getSearchData();
+    },
+    removeTrademark() {
+      this.searchParams.trademark = "";
+      this.getSearchData();
+    },
+    propsInfo(attr, value) {
+      // ["属性ID:属性值:属性名"]
+      if (
+        !this.searchParams.props.includes(
+          `${attr.attrId}:${value}:${attr.attrName}`
+        )
+      ) {
+        this.searchParams.props.push(
+          `${attr.attrId}:${value}:${attr.attrName}`
+        );
+        this.getSearchData();
+      }
+    },
+    removeProps(prop) {
+      this.searchParams.props = this.searchParams.props.filter(
+        (item) => item !== prop
+      );
       this.getSearchData();
     },
   },
