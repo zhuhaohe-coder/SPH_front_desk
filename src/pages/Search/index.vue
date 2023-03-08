@@ -39,23 +39,42 @@
           <div class="sui-navbar">
             <div class="navbar-inner filter">
               <ul class="sui-nav">
-                <li class="active">
-                  <a href="#">综合</a>
+                <li
+                  :class="{ active: isSynthesize }"
+                  @click="changeOrderWay('1')"
+                >
+                  <a
+                    >综合
+                    <i
+                      class="iconfont"
+                      v-show="isAsc && isSynthesize"
+                      @click.stop="changeOrderMethod"
+                      >&#xe66c;</i
+                    >
+                    <i
+                      class="iconfont"
+                      v-show="isDesc && isSynthesize"
+                      @click.stop="changeOrderMethod"
+                      >&#xe66b;</i
+                    >
+                  </a>
                 </li>
-                <li>
-                  <a href="#">销量</a>
-                </li>
-                <li>
-                  <a href="#">新品</a>
-                </li>
-                <li>
-                  <a href="#">评价</a>
-                </li>
-                <li>
-                  <a href="#">价格⬆</a>
-                </li>
-                <li>
-                  <a href="#">价格⬇</a>
+                <li :class="{ active: isPrice }" @click="changeOrderWay('2')">
+                  <a
+                    >价格
+                    <i
+                      class="iconfont"
+                      v-show="isAsc && isPrice"
+                      @click.stop="changeOrderMethod"
+                      >&#xe66c;</i
+                    >
+                    <i
+                      class="iconfont"
+                      v-show="isDesc && isPrice"
+                      @click.stop="changeOrderMethod"
+                      >&#xe66b;</i
+                    ></a
+                  >
                 </li>
               </ul>
             </div>
@@ -154,8 +173,8 @@ export default {
         categoryName: "",
         // 关键字
         keyword: "",
-        // 排序
-        order: "",
+        // 排序 默认为综合|降序
+        order: "1:desc",
         // 第几页(分页器使用)
         pageNo: 1,
         // 展示数据的个数
@@ -220,7 +239,24 @@ export default {
       );
       this.getSearchData();
     },
+    // 更改排序的方式
+    changeOrderWay(way) {
+      this.searchParams.order =
+        this.searchParams.order.split(":")[0] === "1"
+          ? this.searchParams.order.replace("1", way)
+          : this.searchParams.order.replace("2", way);
+      this.getSearchData();
+    },
+    // 更改升降序
+    changeOrderMethod() {
+      this.searchParams.order =
+        this.searchParams.order.split(":")[1] === "desc"
+          ? this.searchParams.order.replace("desc", "asc")
+          : this.searchParams.order.replace("asc", "desc");
+      this.getSearchData();
+    },
   },
+  // 初始化searchParams
   beforeMount() {
     Object.assign(this.searchParams, this.$route.query, this.$route.params);
   },
@@ -229,6 +265,22 @@ export default {
   },
   computed: {
     ...mapGetters(["goodsList"]),
+    // 综合
+    isSynthesize() {
+      return this.searchParams.order.split(":")[0] === "1";
+    },
+    // 价格
+    isPrice() {
+      return this.searchParams.order.split(":")[0] === "2";
+    },
+    // 升序
+    isAsc() {
+      return this.searchParams.order.split(":")[1] === "asc";
+    },
+    // 降序
+    isDesc() {
+      return this.searchParams.order.split(":")[1] === "desc";
+    },
   },
   watch: {
     $route(newValue, oldValue) {

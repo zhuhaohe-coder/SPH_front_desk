@@ -8,6 +8,24 @@
     <title><%= htmlWebpackPlugin.options.title %></title>
     <!-- 引入清除默认的样式 -->
     <link rel="stylesheet" href="<%= BASE_URL %>reset.css" />
+    <!-- 阿里icon -->
+    <style>
+      /* 定义icon图标 */
+      @font-face {
+        font-family: 'iconfont'; /* Project id 3937876 */
+        src: url('//at.alicdn.com/t/c/font_3937876_uvemdxqmxaa.woff2?t=1678196191972')
+            format('woff2'),
+          url('//at.alicdn.com/t/c/font_3937876_uvemdxqmxaa.woff?t=1678196191972')
+            format('woff'),
+          url('//at.alicdn.com/t/c/font_3937876_uvemdxqmxaa.ttf?t=1678196191972')
+            format('truetype');
+      }
+      .iconfont {
+        font-family: 'iconfont' !important;
+        font-size: 16px;
+        font-style: normal;
+      }
+    </style>
   </head>
   <body>
     <noscript>
