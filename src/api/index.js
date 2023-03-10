@@ -24,3 +24,6 @@ export const reqSearchInfo = (params) => {
     data: params,
   });
 };
+
+// 详情模块接口
+export const reqDetailInfo = (params) => requests.get(`/item/${params}`);
