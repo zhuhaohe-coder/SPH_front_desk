@@ -10,7 +10,15 @@ const actions = {
     }
   },
 };
-const getters = {};
+const getters = {
+  // 数据还未请求到时, 为undefined, 至少应该是一个空对象
+  categoryView(state) {
+    return state.detailInfo.categoryView || {};
+  },
+  skuInfo(state) {
+    return state.detailInfo.skuInfo || {};
+  },
+};
 const mutations = {
   GET_DETAIL_INFO(state, detailInfo) {
     state.detailInfo = detailInfo;
