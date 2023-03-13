@@ -18,6 +18,9 @@ const getters = {
   skuInfo(state) {
     return state.detailInfo.skuInfo || {};
   },
+  spuSaleAttrList(state) {
+    return state.detailInfo.spuSaleAttrList || [];
+  },
 };
 const mutations = {
   GET_DETAIL_INFO(state, detailInfo) {

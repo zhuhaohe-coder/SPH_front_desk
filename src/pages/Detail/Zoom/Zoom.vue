@@ -1,11 +1,12 @@
 <template>
   <div class="spec-preview">
     <img :src="bigImage.imgUrl" />
-    <div class="event"></div>
+    <div class="event" @mousemove="handler"></div>
     <div class="big">
-      <img :src="bigImage.imgUrl" />
+      <img :src="bigImage.imgUrl" ref="big" />
     </div>
-    <div class="mask"></div>
+    <!-- 遮幕屏 -->
+    <div class="mask" ref="mask"></div>
   </div>
 </template>
 
@@ -13,9 +14,40 @@
 export default {
   name: "Zoom",
   props: ["skuImageList"],
+  data() {
+    return {
+      imageIndex: 0,
+    };
+  },
   computed: {
     bigImage() {
-      return this.skuImageList[0] || {};
+      return this.skuImageList[this.imageIndex] || {};
+    },
+  },
+  mounted() {
+    this.$bus.$on("getIndex", (index) => {
+      this.imageIndex = index;
+    });
+  },
+  beforeDestroy() {
+    this.$bus.$off("getIndex");
+  },
+  methods: {
+    handler(event) {
+      const mask = this.$refs.mask;
+      const big = this.$refs.big;
+      let left = event.offsetX - mask.offsetWidth / 2;
+      let top = event.offsetY - mask.offsetHeight / 2;
+
+      if (left <= 0) left = 0;
+      if (left >= mask.offsetWidth) left = mask.offsetWidth;
+      if (top <= 0) top = 0;
+      if (top >= mask.offsetHeight) top = mask.offsetHeight;
+
+      mask.style.left = left + "px";
+      mask.style.top = top + "px";
+      big.style.left = -2 * left + "px";
+      big.style.top = -2 * top + "px";
     },
   },
 };
