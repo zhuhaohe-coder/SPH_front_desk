@@ -94,12 +94,25 @@
             </div>
             <div class="cartWrap">
               <div class="controls">
-                <input autocomplete="off" class="itxt" />
-                <a href="javascript:" class="plus">+</a>
-                <a href="javascript:" class="mins">-</a>
+                <input
+                  autocomplete="off"
+                  class="itxt"
+                  v-model.number="skuCounts"
+                  oninput="value=value.replace(/[^0-9]/g,'')"
+                />
+
+                <a href="javascript:" class="plus" @click="skuCounts++">+</a>
+                <a
+                  href="javascript:"
+                  class="mins"
+                  @click="skuCounts <= 1 ? (skuCounts = 1) : skuCounts--"
+                  >-</a
+                >
               </div>
               <div class="add">
-                <a href="javascript:">加入购物车</a>
+                <a href="javascript:" @click="addOrUpdateShopCart"
+                  >加入购物车</a
+                >
               </div>
             </div>
           </div>
@@ -344,7 +357,11 @@ import { mapGetters } from "vuex";
 
 export default {
   name: "Detail",
-
+  data() {
+    return {
+      skuCounts: 1,
+    };
+  },
   components: {
     ImageList,
     Zoom,
@@ -356,11 +373,26 @@ export default {
     ...mapGetters(["categoryView", "skuInfo", "spuSaleAttrList"]),
   },
   methods: {
+    // 产品属性高亮
     changeActive(value, valueList) {
       valueList.forEach((item) => {
         item.isChecked = "0";
       });
       value.isChecked = "1";
+    },
+    // 加入购物车
+    async addOrUpdateShopCart() {
+      try {
+        // 派发的action前有async,返回的一定是一个Promise
+        await this.$store.dispatch("addOrUpdateShopCart", {
+          skuId: this.$route.params.skuId,
+          skuNum: this.skuCounts,
+        });
+        // 成功,进行路由跳转
+      } catch (error) {
+        // 加入失败
+        alert(error.message);
+      }
     },
   },
 };

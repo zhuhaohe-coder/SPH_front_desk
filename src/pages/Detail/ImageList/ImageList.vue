@@ -5,9 +5,12 @@
         class="swiper-slide"
         v-for="(image, index) in skuImageList"
         :key="image.id"
-        @click="changeCurrentImage(index)"
       >
-        <img :src="image.imgUrl" :class="{ active: currentImage === index }" />
+        <img
+          :src="image.imgUrl"
+          :class="{ active: currentImage === index }"
+          @click="changeCurrentImage(index)"
+        />
       </div>
     </div>
     <div class="swiper-button-next"></div>
@@ -37,7 +40,7 @@ export default {
         // 在new Swiper实例之前, 页面中的结构必须完整
         this.$nextTick(() => {
           new Swiper(".swiper-container", {
-            loop: true, // 循环模式选项
+            // loop: true, // 循环模式选项
             // 如果需要前进后退按钮
             navigation: {
               nextEl: ".swiper-button-next",
