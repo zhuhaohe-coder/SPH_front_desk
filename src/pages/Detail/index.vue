@@ -389,6 +389,12 @@ export default {
           skuNum: this.skuCounts,
         });
         // 成功,进行路由跳转
+        // 简单参数(skuCounts)使用query参数 复杂参数(skuInfo)使用会话存储
+        sessionStorage.setItem("skuInfo", JSON.stringify(this.skuInfo));
+        this.$router.push({
+          name: "addcartsuccess",
+          query: { skuNum: this.skuCounts },
+        });
       } catch (error) {
         // 加入失败
         alert(error.message);

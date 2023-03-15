@@ -3,6 +3,9 @@ import Search from "@/pages/Search";
 import Login from "@/pages/Login";
 import Register from "@/pages/Register";
 import Detail from "@/pages/Detail";
+import AddCartSuccess from "@/pages/AddCartSuccess";
+import ShopCart from "@/pages/ShopCart";
+
 export default [
   //重定向,初始化时展示home
   {
@@ -37,6 +40,21 @@ export default [
     name: "detail",
     path: "/detail/:skuId",
     component: Detail,
+    meta: {
+      isShowFooter: true,
+    },
+  },
+  {
+    name: "addcartsuccess",
+    path: "/addcartsuccess",
+    component: AddCartSuccess,
+    meta: {
+      isShowFooter: true,
+    },
+  },
+  {
+    path: "/shopcart",
+    component: ShopCart,
     meta: {
       isShowFooter: true,
     },

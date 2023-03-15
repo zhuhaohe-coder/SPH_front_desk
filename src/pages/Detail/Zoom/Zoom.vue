@@ -33,6 +33,7 @@ export default {
     this.$bus.$off("getIndex");
   },
   methods: {
+    // 放大镜效果
     handler(event) {
       const mask = this.$refs.mask;
       const big = this.$refs.big;

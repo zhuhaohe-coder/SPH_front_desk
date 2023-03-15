@@ -34,3 +34,6 @@ export const reqAddOrUpdateShopCart = (skuId, skuNum) =>
     url: `cart/addToCart/${skuId}/${skuNum}`,
     method: "post",
   });
+
+// 购物车列表
+export const reqShopCartList = () => requests.get("/cart/cartList");
