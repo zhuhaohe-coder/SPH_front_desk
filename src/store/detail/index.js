@@ -1,6 +1,9 @@
 import { reqDetailInfo, reqAddOrUpdateShopCart } from "@/api";
+import getUUID from "@/utils/uuid_token";
 const state = {
   detailInfo: {},
+  // 游客身份标识
+  uuid_token: getUUID(),
 };
 const actions = {
   async getDetailInfo({ commit }, skuId) {
@@ -9,6 +12,7 @@ const actions = {
       commit("GET_DETAIL_INFO", result.data);
     }
   },
+  // 添加购物车或更新购物车数据
   async addOrUpdateShopCart({ commit }, { skuId, skuNum }) {
     // 并未返回其余数据,仅返回 code=200 代表请求成功
     const result = await reqAddOrUpdateShopCart(skuId, skuNum);

@@ -1,14 +1,23 @@
 import { reqShopCartList } from "@/api";
 
 const state = { shopCartList: [] };
-const mutations = {};
+const mutations = {
+  GET_SHOP_CART_LIST(state, data) {
+    state.shopCartList = data;
+  },
+};
 const actions = {
   async getShopCartList({ commit }) {
     const result = await reqShopCartList();
-    console.log(result);
+
+    commit("GET_SHOP_CART_LIST", result.data[0].cartInfoList);
   },
 };
-const getters = {};
+const getters = {
+  shopCartList(state) {
+    return state.shopCartList;
+  },
+};
 
 export default {
   state,
